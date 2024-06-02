@@ -12,7 +12,7 @@ import cvzone
 import math
 
 # Load YOLO model for object detection
-model = YOLO('yolov8s.pt')
+model = YOLO('yolov8n.pt')
 
 class Tracker:
     def __init__(self):
@@ -55,16 +55,13 @@ offset = 6
 tracker1 = Tracker()
 tracker2 = Tracker()
 
-# defaultGreen = {0: 14, 1: 14, 2: 14, 3: 14}
-# defaultRed = 20
-# defaultYellow = 3
 
 signals = []
 noOfSignals = 4
 
 # Different timing sets based on traffic density
 timing_sets = {
-    1: {'red': 14, 'green': 24, 'yellow': 3},
+    1: {'red': 24, 'green': 14, 'yellow': 3},
     2: {'red': 24, 'green': 35, 'yellow': 3},
     3: {'red': 75, 'green': 83, 'yellow': 3},
     4: {'red': 23, 'green': 20, 'yellow': 3},
@@ -185,7 +182,10 @@ class Main(QMainWindow):
                     signals[i].yellow = timing['yellow']
                     signals[i].green = timing['green']
                 else:
-                    signals[i].red = timing['green'] + timing['yellow'] + 1
+                    if (timing_set == 4):
+                        signals[i].red = timing['green'] + timing['yellow']
+                    else:
+                        signals[i].red = timing['green'] + timing['yellow'] + 1
                     signals[i].yellow = timing['yellow']
                     signals[i].green = timing['red'] - timing['yellow']
 
@@ -195,7 +195,10 @@ class Main(QMainWindow):
                     signals[i].yellow = timing['yellow']
                     signals[i].green = timing['green']
                 else:
-                    signals[i].red = timing['green'] + timing['yellow'] + 1
+                    if (timing_set == 4):
+                        signals[i].red = timing['green'] + timing['yellow']
+                    else:
+                        signals[i].red = timing['green'] + timing['yellow'] + 1
                     signals[i].yellow = timing['yellow']
                     signals[i].green = timing['red'] - timing['yellow'] 
 
